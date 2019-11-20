@@ -1,9 +1,55 @@
 <!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="utf-8">
         <title>Plot 1</title>
         <style></style>
+<!-- TODO: get it working in v5-->
+<!--       // <script type="text/javascript" src="source/d3v5/d3.js"></script> -->
+       <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
     </head>
     <body>
+        <script type="text/javascript">
+            //helper functions:
+            var rowConverter = function(d) {
+                //convert string to number in data
+                return {
+                    Critic_Score: parseFloat(d.Critic_Score),
+                    Developer: d.Developer,
+                    ESRB_Rating: d.ESRB_Rating,
+                    Genre: d.Genre,
+                    Global_Sales: parseFloat(d.Global_Sales),
+                    JP_Sales: parseFloat(d.JP_Sales),
+                    Last_Update: d.Last_Update,
+                    NA_Sales: parseFloat(d.NA_Sales),
+                    Name: d.Name,
+                    Other_Sales: parseFloat(d.Other_Sales),
+                    PAL_Sales: parseFloat(d.PAL_Sales),
+                    Platform: d.Platform,
+                    Publisher: d.Publisher,
+                    Rank: parseFloat(d.Rank),
+                    Total_Shipped: parseFloat(d.Total_Shipped),
+                    User_Score: parseFloat(d.User_Score),
+                    VGChartz_Score: parseFloat(d.VGChartz_Score),
+                    Vgchartzscore: parseFloat(d.Vgchartzscore),
+                    Year: parseFloat(d.Year),
+                    basename: d.basename,
+                    img_url: d.img_url,
+                    status: d.status,
+                    url: d.url
+                };
+            }
+                        
+            d3.csv("data/vgsales-12-4-2019.csv", rowConverter, function(data) {
+                console.table(data);
+                //console.log(data);
+            });
+        
+            d3.select("body")
+              .append("p")
+              .text("New paragraph!");
+
+        </script>
         <p>Hello there</p>
 
     </body>
