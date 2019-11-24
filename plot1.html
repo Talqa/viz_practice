@@ -56,7 +56,14 @@
                   .data(dataset)
                   .enter()
                   .append("p")
-                  .text(function(d) {return d.Developer;});
+                  .text(function(d) {return d.Developer;})
+                  .style("color", function(d) {
+                      if (d.Developer == "Nintendo EAD") {
+                          return "red";
+                      } else {
+                          return "black";
+                      }
+                  });
 
             });
                   
