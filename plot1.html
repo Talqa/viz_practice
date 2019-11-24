@@ -12,7 +12,7 @@
         <script type="text/javascript">
             //helper functions:
             var rowConverter = function(d) {
-                //convert string to number in data
+                //convert data from string to other formats where needed
                 return {
                     Critic_Score: parseFloat(d.Critic_Score),
                     Developer: d.Developer,
@@ -39,16 +39,27 @@
                     url: d.url
                 };
             }
-                        
-            d3.csv("data/vgsales-12-4-2019.csv", rowConverter, function(data) {
-                console.table(data);
-                //console.log(data);
-            });
-        
-            d3.select("body")
-              .append("p")
-              .text("New paragraph!");
+            
+            //dataset
+            var dataset;
+//            var dataset = [ 5, 10, 15, 20, 25 ];
 
+            //load and use dataset
+            //everything you want to do needs to be within the data loading function (csv)
+            d3.csv("data/vgsales-12-4-2019.csv", rowConverter, function(data) {
+                dataset = data;
+                //console.table(data);
+                //console.log(data);
+            
+                d3.select("body")
+                  .selectAll("p")
+                  .data(dataset)
+                  .enter()
+                  .append("p")
+                  .text(function(d) {return d.Developer;});
+
+            });
+                  
         </script>
         <p>Hello there</p>
 
