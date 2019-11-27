@@ -18,6 +18,16 @@
     </head>
     <body>
         <script type="text/javascript">
+            //variables:
+            var w = 500;
+            var h = 100;
+            var barPadding = 1;
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
             //helper functions:
             var rowConverter = function(d) {
                 //convert data from string to other formats where needed
@@ -78,17 +88,51 @@
                 //       }
                 //   });
 
-                  d3.select("body")
-                    .selectAll("div")
-                    .data(dataset)
-                    .enter()
-                    .append("div")
-                    .attr("class", "bar")
-                    .style("height", function(d) {
-                        var barHeight = Math.log(d.Num_games) * 10;
+                //   d3.select("body")
+                //     .selectAll("div")
+                //     .data(dataset)
+                //     .enter()
+                //     .append("div")
+                //     .attr("class", "bar")
+                //     .style("height", function(d) {
+                //         var barHeight = Math.log(d.Num_games) * 10;
 //                        var barHeight = (d.Num_games / 3069) * 500 ; // total num games: 3069
-                        return barHeight + "px";
-                    });
+                    //     return barHeight + "px";
+                    // });
+
+                newdata = dataset.slice(0,20);
+                    
+                //draw bars
+                    svg.selectAll("rect")
+                        .data(newdata)
+                        .enter()
+                        .append("rect")
+                        .attr("x", function(d,i) {
+                            return i * (w / newdata.length);
+                        })
+                        .attr("y", function(d) {
+                            return h - d.Num_games * 2;
+                        })
+                        .attr("width", w / newdata.length - barPadding)
+                        .attr("height", function(d) {
+                            return d.Num_games * 2;
+                        })
+                        .attr("fill", "teal");
+
+                //add labels
+                        svg.selectAll("text")
+                           .data(newdata)
+                           .enter()
+                           .append("text")
+                           .text(function(d) {
+                               return d.Publisher;
+                           })
+                           .attr("x", function(d,i) {
+                            return i * (w / newdata.length);
+                            })
+                            .attr("y", function(d) {
+                                return h - d.Num_games * 2;
+                            })
 
             });
                   
