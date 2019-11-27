@@ -3,7 +3,14 @@
     <head>
         <meta charset="utf-8">
         <title>Plot 1</title>
-        <style></style>
+        <style>
+            div.bar {
+                display: inline-block;
+                width: 20px;
+                height: 75px;   /* We'll override height later */
+                background-color: teal;
+            }
+        </style>
 <!-- TODO: get it working in v5-->
 <!--       // <script type="text/javascript" src="source/d3v5/d3.js"></script> -->
        <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
@@ -51,19 +58,33 @@
                 //console.table(data);
                 //console.log(data);
             
-                d3.select("body")
-                  .selectAll("p")
-                  .data(dataset)
-                  .enter()
-                  .append("p")
-                  .text(function(d) {return d.Developer;})
-                  .style("color", function(d) {
-                      if (d.Developer == "Nintendo EAD") {
-                          return "red";
-                      } else {
-                          return "black";
-                      }
-                  });
+                // d3.select("body")
+                //   .selectAll("p")
+                //   .data(dataset)
+                //   .enter()
+                //   .append("p")
+                //   .text(function(d) {return d.Developer;})
+                //   .style("color", function(d) {
+                //       if (d.Developer == "Nintendo EAD") {
+                //           return "red";
+                //       } else {
+                //           return "black";
+                //       }
+                //   });
+
+                  d3.select("body")
+                    .selectAll("div")
+                    .data(dataset)
+                    .enter()
+                    .append("div")
+                    .attr("class", "bar")
+                    .style("height", function(d) {
+                        if (d.Developer == "Nintendo EAD") {
+                            return d.Critic_Score + "px";
+                        } else {
+                            return 0 + "px";
+                        }
+                    });
 
             });
                   
