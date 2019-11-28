@@ -20,7 +20,7 @@
         <script type="text/javascript">
             //variables:
             var w = 500;
-            var h = 100;
+            var h = 300;
             var barPadding = 1;
 
             var svg = d3.select("body")
@@ -111,13 +111,15 @@
                             return i * (w / newdata.length);
                         })
                         .attr("y", function(d) {
-                            return h - d.Num_games * 2;
+                            return h - d.Num_games * 5 - 20;
                         })
                         .attr("width", w / newdata.length - barPadding)
                         .attr("height", function(d) {
-                            return d.Num_games * 2;
+                            return d.Num_games * 5 + 10;
                         })
-                        .attr("fill", "teal");
+                        .attr("fill", function(d) {
+                            return "rgb(0, 0, " + Math.round(d.Num_games * 10) + ")";
+                        });
 
                 //add labels
                         svg.selectAll("text")
@@ -125,14 +127,18 @@
                            .enter()
                            .append("text")
                            .text(function(d) {
-                               return d.Publisher;
+                               return d.Num_games;
                            })
                            .attr("x", function(d,i) {
-                            return i * (w / newdata.length);
+                            return i * (w / newdata.length) + (w / newdata.length - barPadding) / 2;
                             })
                             .attr("y", function(d) {
-                                return h - d.Num_games * 2;
+                                return h - (d.Num_games * 5) - 8;
                             })
+                            .attr("text-anchor", "middle")
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "11px")
+                            .attr("fill", "white");
 
             });
                   
