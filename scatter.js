@@ -44,7 +44,7 @@ var rowConverter = function(d) {
                return d.Critic_Score * 50;
            })
            .attr("cy", function(d) {
-               return (d.NA_Sales * 100) + 10;
+               return h - (d.NA_Sales * 100) - 10;
            })
            .attr("r", function(d) {
                return Math.sqrt(d.NA_Sales * 100);
@@ -62,7 +62,7 @@ var rowConverter = function(d) {
                     return d.Critic_Score * 50;
                 })
                 .attr("y", function(d) {
-                    return (d.NA_Sales * 100) + 10;
+                    return h - (d.NA_Sales * 100) - 10;
                 })
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "11px")
