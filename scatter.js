@@ -11,10 +11,11 @@ var svg = d3.select("body")
 var rowConverter = function(d) {
     //convert data from string to other formats where needed
     return {
-        Critic_Score: parseFloat(d.Critic_Score),
+        Critic_Score: +d.Critic_Score,
         Name: d.Name,
         Publisher: d.Publisher,
-        Year: parseFloat(d.Year)
+        Year: +d.Year,
+        NA_Sales: +d.NA_Sales
     };
 }
 
@@ -34,17 +35,37 @@ var rowConverter = function(d) {
             return d.Publisher=="Nintendo" 
             });
 
+        //add circles
         svg.selectAll("circle")  
            .data(newdata)
            .enter()
            .append("circle")  
            .attr("cx", function(d) {
-               return (d.Year - 2000) * 10;
+               return d.Critic_Score * 50;
            })
            .attr("cy", function(d) {
-               return d.Critic_Score * 10;
+               return (d.NA_Sales * 100) + 10;
            })
-           .attr("r", 5);
+           .attr("r", function(d) {
+               return Math.sqrt(d.NA_Sales * 100);
+           });
 
+           //add labels
+           svg.selectAll("text")  
+                .data(newdata)
+                .enter()
+                .append("text")
+                .text(function(d) {
+                    return d.Name;
+                })
+                .attr("x", function(d) {
+                    return d.Critic_Score * 50;
+                })
+                .attr("y", function(d) {
+                    return (d.NA_Sales * 100) + 10;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
+                .attr("fill", "red");
 
     });
