@@ -37,3 +37,21 @@ var rowConverter = function(d) {
         url: d.url
     };
 }
+
+    //dataset
+    var dataset;
+
+    //load and use dataset
+    //everything you want to do needs to be within the data loading function (csv)
+    d3.csv("data/vgsales-12-4-2019.csv", rowConverter, function(data) {
+        dataset = data;
+        
+        //console.table(data);
+        //console.log(data);
+    
+        // partial data selection for testing
+        newdata = dataset.filter(function(d) {return d.Publisher=="Nintendo"; });
+
+
+
+    });
