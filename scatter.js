@@ -54,6 +54,8 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .range([2, 10])
     .nice()
 
+  var xAxis = d3.axisBottom(xScale)
+
   // add circles
   svg.selectAll('circle')
     .data(newdata)
@@ -92,4 +94,13 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .attr('font-family', 'sans-serif')
     .attr('font-size', '11px')
     .attr('fill', 'blue')
+
+  // add axes
+  svg.append('g')
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + (h - padding) + ")")
+    .call(xAxis)
+    .scale(xScale)
+
+
 })
