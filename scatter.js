@@ -1,7 +1,7 @@
 // variables:
 var w = 600
 var h = 400
-var padding = 15
+var padding = 30
 
 var svg = d3.select('body')
   .append('svg')
@@ -37,7 +37,7 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
   })
 
   var xScale = d3.scaleLinear()
-    .domain([d3.min(newdata, function (d) { return d.Critic_Score }),
+    .domain([0,
       d3.max(newdata, function (d) { return d.Critic_Score })])
     .range([padding, w - padding])
     .nice()
@@ -54,7 +54,14 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .range([2, 10])
     .nice()
 
-  var xAxis = d3.axisBottom(xScale)
+  var xAxis = d3.axisBottom()
+    .scale(xScale)
+    .tickValues([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) // you need to have scale set domain min low enough to show 0
+
+  var yAxis = d3.axisLeft()
+    .scale(yScale)
+    .ticks(8)
+    .tickFormat(d3.format('.1f'))
 
   // add circles
   svg.selectAll('circle')
@@ -75,32 +82,34 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     })
     .attr('fill', 'orange')
 
-  // add labels
-  svg.selectAll('text')
-    .data(newdata)
-    .enter()
-    .append('text')
-    .text(function (d) {
-      return d.NA_Sales
-    })
-    .attr('x', function (d) {
-    //   return d.Critic_Score * 50
-      return xScale(d.Critic_Score)
-    })
-    .attr('y', function (d) {
-    //   return h - (d.NA_Sales * 100) - 10
-      return yScale(d.NA_Sales)
-    })
-    .attr('font-family', 'sans-serif')
-    .attr('font-size', '11px')
-    .attr('fill', 'blue')
+  // add circle labels
+//   svg.selectAll('text')
+//     .data(newdata)
+//     .enter()
+//     .append('text')
+//     .text(function (d) {
+//       return d.NA_Sales
+//     })
+//     .attr('x', function (d) {
+//     //   return d.Critic_Score * 50
+//       return xScale(d.Critic_Score)
+//     })
+//     .attr('y', function (d) {
+//     //   return h - (d.NA_Sales * 100) - 10
+//       return yScale(d.NA_Sales)
+//     })
+//     .attr('font-family', 'sans-serif')
+//     .attr('font-size', '11px')
+//     .attr('fill', 'blue')
 
   // add axes
   svg.append('g')
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (h - padding) + ")")
+    .attr('class', 'axis')
+    .attr('transform', 'translate(0,' + (h - padding) + ')')
     .call(xAxis)
-    .scale(xScale)
 
-
+  svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(' + padding + ',0)')
+    .call(yAxis)
 })
