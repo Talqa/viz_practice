@@ -113,7 +113,7 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     })
     .attr('y', function (d) {
       if (d.Num_games > 10) {
-        return yScale(d.Num_games) + 10
+        return yScale(d.Num_games) + 13
       } else {
         return yScale(d.Num_games) - 5
       }
