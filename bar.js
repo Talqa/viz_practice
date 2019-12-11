@@ -42,7 +42,7 @@ var rowConverter = function (d) {
   // };
   return { // num games per publisher file
     Publisher: d.Publisher,
-    Year:  +d.Year, // do not use parseYear(d.Year) in bar chart
+    Year: +d.Year, // do not use parseYear(d.Year) in bar chart
     Num_games: +d.Num_games
   }
 }
@@ -67,7 +67,7 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
 
   // set scales and axes
   var xScale = d3.scaleBand()
-    .domain(newdata.map( function (d) { return d.Year }))
+    .domain(newdata.map(function (d) { return d.Year }))
     .range([padding, w - padding])
     .padding(barPadding)
 
@@ -121,13 +121,15 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     .attr('text-anchor', 'middle')
     .attr('font-family', 'Optima, Futura, sans-serif')
     .attr('font-size', '10px')
-    .attr('fill', function (d) {
-      if (d.Num_games > 10) {
-        return 'white'
-      } else {
-        return 'black'
-      }
-    })
+    .attr('fill', 'black'
+    // function (d) {
+    //   if (d.Num_games > 10) {
+    //     return 'white'
+    //   } else {
+    //     return 'black'
+    //   }
+    // }
+    )
 
   // add axes
   svg.append('g')
