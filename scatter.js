@@ -36,6 +36,7 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     return d.Publisher === 'Nintendo'
   })
 
+  // set scales and axes
   var xScale = d3.scaleLinear()
     .domain([0,
       d3.max(newdata, function (d) { return d.Critic_Score })])
@@ -69,18 +70,15 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .enter()
     .append('circle')
     .attr('cx', function (d) {
-    //   return d.Critic_Score * 50
       return xScale(d.Critic_Score)
     })
     .attr('cy', function (d) {
-    //   return h - (d.NA_Sales * 100) - 10
       return yScale(d.NA_Sales)
     })
     .attr('r', function (d) {
-    //   return Math.sqrt(d.NA_Sales * 100)
       return aScale(d.NA_Sales)
     })
-    .attr('fill', 'orange')
+    .attr('fill', '#D88011')
 
   // add circle labels
 //   svg.selectAll('text')

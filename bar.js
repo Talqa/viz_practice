@@ -1,15 +1,15 @@
 // variables:
-var w = 600
+var w = 1000
 var h = 400
-var barPadding = 1
-var padding = 15
+var barPadding = 0.1
+var padding = 30
 
 var svg = d3.select('body')
   .append('svg')
   .attr('width', w)
   .attr('height', h)
 
-var parseYear = d3.timeParse('%Y')
+// var parseYear = d3.timeParse('%Y')
 
 // helper functions:
 var rowConverter = function (d) {
@@ -42,7 +42,7 @@ var rowConverter = function (d) {
   // };
   return { // num games per publisher file
     Publisher: d.Publisher,
-    Year: parseYear(d.Year), // +d.Year,
+    Year:  +d.Year, // do not use parseYear(d.Year) in bar chart
     Num_games: +d.Num_games
   }
 }
@@ -60,42 +60,47 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
   // console.log(data);
 
   // partial data selection for testing
-  var newdata = dataset.filter(function (d) { return d.Publisher === 'Nintendo' })
+  var newdata = dataset.filter(function (d) {
+    return d.Publisher === 'Nintendo'
+  })
   console.log(newdata)
 
-  var xScale = d3.scaleTime()
-    .domain([
-      d3.min(newdata, function (d) { return d.Year }),
-      d3.max(newdata, function (d) { return d.Year })
-    ])
+  // set scales and axes
+  var xScale = d3.scaleBand()
+    .domain(newdata.map( function (d) { return d.Year }))
     .range([padding, w - padding])
+    .padding(barPadding)
 
-  // var yScale = d3.scaleLinear()
-  //   .domain([d3.min(newdata, function (d) { return d.Num_games }),
-  //     d3.max(newdata, function (d) { return d.Num_games })])
-  //   .range([0, h])
+  var yScale = d3.scaleLinear()
+    .domain([d3.min(newdata, function (d) { return d.Num_games }),
+      d3.max(newdata, function (d) { return d.Num_games })])
+    .range([h - padding, padding])
+
+  var xAxis = d3.axisBottom()
+    .scale(xScale)
+
+  var yAxis = d3.axisLeft()
+    .scale(yScale)
+    .ticks(8)
 
   // draw bars
   svg.selectAll('rect')
     .data(newdata)
     .enter()
     .append('rect')
-    .attr('x', function (d, i) {
-      // return i * (w / newdata.length)
+    .attr('x', function (d) {
       return xScale(d.Year)
     })
     .attr('y', function (d) {
-      return h - d.Num_games * 2
+      return yScale(d.Num_games)
     })
-    .attr('width', w / newdata.length - barPadding)
+    .attr('width', xScale.bandwidth())
     .attr('height', function (d) {
-      return d.Num_games * 2
+      return h - padding - yScale(d.Num_games) // h-padding because you need ot invert here too
     })
-    .attr('fill', function (d) {
-      return 'rgb(0, 0, ' + Math.round(d.Num_games * 5) + ')'
-    })
+    .attr('fill', '#D88011')
 
-  // add labels
+  // add bar labels
   svg.selectAll('text')
     .data(newdata)
     .enter()
@@ -104,18 +109,17 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
       return d.Num_games
     })
     .attr('x', function (d, i) {
-      // return i * (w / newdata.length) + (w / newdata.length - barPadding) / 2
-      return xScale(d.Year) + 5
+      return xScale(d.Year) + 10
     })
     .attr('y', function (d) {
       if (d.Num_games > 10) {
-        return h - (d.Num_games * 2) + 10
+        return yScale(d.Num_games) + 10
       } else {
-        return h - (d.Num_games * 2) - 5
+        return yScale(d.Num_games) - 5
       }
     })
     .attr('text-anchor', 'middle')
-    .attr('font-family', 'sans-serif')
+    .attr('font-family', 'Optima, Futura, sans-serif')
     .attr('font-size', '10px')
     .attr('fill', function (d) {
       if (d.Num_games > 10) {
@@ -124,4 +128,15 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
         return 'black'
       }
     })
+
+  // add axes
+  svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(0,' + (h - padding) + ')')
+    .call(xAxis)
+
+  svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(' + padding + ',0)')
+    .call(yAxis)
 })
