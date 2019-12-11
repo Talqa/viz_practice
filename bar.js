@@ -2,7 +2,7 @@
 var w = 1000
 var h = 400
 var barPadding = 0.1
-var padding = 30
+var padding = 40
 
 var svg = d3.select('body')
   .append('svg')
@@ -130,6 +130,34 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     //   }
     // }
     )
+
+  // add x axis title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', w / 2)
+    .attr('y', h)
+    .text('Year')
+
+  // add y axis title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', -h / 2)
+    .attr('y', 10)
+    .attr('transform', 'rotate(-90)')
+    .text('Number of Video Games Sold')
+
+  // add plot title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', w / 2)
+    .attr('y', 20)
+    .text('Number of Games Sold per Year')
 
   // add axes
   svg.append('g')

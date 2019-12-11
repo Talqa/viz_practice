@@ -1,7 +1,7 @@
 // variables:
 var w = 600
 var h = 400
-var padding = 30
+var padding = 45
 
 var svg = d3.select('body')
   .append('svg')
@@ -81,24 +81,52 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .attr('fill', '#D88011')
 
   // add circle labels
-//   svg.selectAll('text')
-//     .data(newdata)
-//     .enter()
-//     .append('text')
-//     .text(function (d) {
-//       return d.NA_Sales
-//     })
-//     .attr('x', function (d) {
-//     //   return d.Critic_Score * 50
-//       return xScale(d.Critic_Score)
-//     })
-//     .attr('y', function (d) {
-//     //   return h - (d.NA_Sales * 100) - 10
-//       return yScale(d.NA_Sales)
-//     })
-//     .attr('font-family', 'sans-serif')
-//     .attr('font-size', '11px')
-//     .attr('fill', 'blue')
+  //   svg.selectAll('text')
+  //     .data(newdata)
+  //     .enter()
+  //     .append('text')
+  //     .text(function (d) {
+  //       return d.NA_Sales
+  //     })
+  //     .attr('x', function (d) {
+  //     //   return d.Critic_Score * 50
+  //       return xScale(d.Critic_Score)
+  //     })
+  //     .attr('y', function (d) {
+  //     //   return h - (d.NA_Sales * 100) - 10
+  //       return yScale(d.NA_Sales)
+  //     })
+  //     .attr('font-family', 'sans-serif')
+  //     .attr('font-size', '11px')
+  //     .attr('fill', 'blue')
+
+  // add x axis title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', w / 2)
+    .attr('y', h)
+    .text('Critic Score')
+
+  // add y axis title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', -h / 2)
+    .attr('y', 10)
+    .attr('transform', 'rotate(-90)')
+    .text('North America Sales [Milions]')
+
+  // add plot title
+  svg.append('text')
+    .attr('class', 'axesTitle')
+    .style('text-anchor', 'middle')
+    .attr('font-weight', 'bold')
+    .attr('x', w / 2)
+    .attr('y', 20)
+    .text('Critic Score vs Sales in North America')
 
   // add axes
   svg.append('g')
