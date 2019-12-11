@@ -2,6 +2,11 @@ Here I try to create various visualizations in D3.js.
 
 Notes on running local server:
 
+To run a server from VS Code (Live Server extension):
+- right-click inside html file and select 'Open with Live Server'
+- to start/stop server: alt+O/alt+C
+  
+  
 To run a server for D3.js (v3) from Node.js:
 - open PowerShell
 - navigate to the folder with your html page
