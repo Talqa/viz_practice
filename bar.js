@@ -1,7 +1,6 @@
 // variables:
 var w = 1000
 var h = 400
-var barPadding = 0.1
 var padding = 40
 
 var svg = d3.select('body')
@@ -68,11 +67,12 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
   // set scales and axes
   var xScale = d3.scaleBand()
     .domain(newdata.map(function (d) { return d.Year }))
-    .range([padding, w - padding])
-    .padding(barPadding)
+    // .range([padding, w - padding]) // due to half-pixel values it creates fuzzy bars
+    .rangeRound([padding, w - padding]) // does crisp edges of bars
+    .paddingInner(0.1)
 
   var yScale = d3.scaleLinear()
-    .domain([d3.min(newdata, function (d) { return d.Num_games }),
+    .domain([0,
       d3.max(newdata, function (d) { return d.Num_games })])
     .range([h - padding, padding])
 
@@ -157,7 +157,7 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     .attr('font-weight', 'bold')
     .attr('x', w / 2)
     .attr('y', 20)
-    .text('Number of Games Sold per Year')
+    .text('Number of Games Published per Year')
 
   // add axes
   svg.append('g')
