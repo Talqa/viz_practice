@@ -64,6 +64,10 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
   })
   console.log(newdata)
 
+  var newdata2 = dataset.filter(function (d) {
+    return d.Publisher === 'Activision'
+  })
+
   // set scales and axes
   var xScale = d3.scaleBand()
     .domain(newdata.map(function (d) { return d.Year }))
@@ -109,7 +113,7 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
       return d.Num_games
     })
     .attr('x', function (d, i) {
-      return xScale(d.Year) + 10
+      return xScale(d.Year) + xScale.bandwidth() / 2
     })
     .attr('y', function (d) {
       if (d.Num_games > 10) {
@@ -148,7 +152,7 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     .attr('x', -h / 2)
     .attr('y', 10)
     .attr('transform', 'rotate(-90)')
-    .text('Number of Video Games Sold')
+    .text('Number of Video Games Published')
 
   // add plot title
   svg.append('text')
@@ -157,16 +161,145 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
     .attr('font-weight', 'bold')
     .attr('x', w / 2)
     .attr('y', 20)
-    .text('Number of Games Published per Year')
+    .text('Number of Video Games Published per Year')
 
   // add axes
   svg.append('g')
-    .attr('class', 'axis')
+    .attr('class', 'x axis')
     .attr('transform', 'translate(0,' + (h - padding) + ')')
     .call(xAxis)
 
   svg.append('g')
-    .attr('class', 'axis')
+    .attr('class', 'y axis')
     .attr('transform', 'translate(' + padding + ',0)')
     .call(yAxis)
+
+  // interactivity (button)
+  d3.select('button')
+    .on('click', function () {
+      // update scales
+      xScale.domain(newdata2.map(function (d) { return d.Year }))
+      yScale.domain([0,
+        d3.max(newdata2, function (d) { return d.Num_games })])
+
+      // create new bars
+      var bars = svg.selectAll('rect')
+        .data(newdata2)
+        .enter()
+        .append('rect')
+        .attr('x', w)
+        .attr('y', function (d) {
+          return yScale(d.Num_games)
+        })
+        .attr('width', xScale.bandwidth())
+        .attr('height', function (d) {
+          return h - padding - yScale(d.Num_games) // h-padding because you need ot invert here too
+        })
+        .attr('fill', '#D88011')
+
+      // update existing bars
+      svg.selectAll('rect')
+        .data(newdata2)
+        .merge(bars)
+        .transition()
+        .duration(1000)
+        .attr('x', function (d) {
+          return xScale(d.Year)
+        })
+        .attr('y', function (d) {
+          return yScale(d.Num_games)
+        })
+        .attr('width', xScale.bandwidth())
+        .attr('height', function (d) {
+          return h - padding - yScale(d.Num_games) // h-padding because you need ot invert here too
+        })
+
+      // create new bar labels
+      var barLabel = svg.selectAll('text')
+        .data(newdata2)
+        .enter()
+        .append('text')
+        .text(function (d) {
+          return d.Num_games
+        })
+        .attr('x', w)
+        .attr('y', function (d) {
+          if (d.Num_games > 10) {
+            return yScale(d.Num_games) + 13
+          } else {
+            return yScale(d.Num_games) - 5
+          }
+        })
+        .attr('text-anchor', 'middle')
+        .attr('font-family', 'Optima, Futura, sans-serif')
+        .attr('font-size', '10px')
+        .attr('fill', 'black'
+          // function (d) {
+          //   if (d.Num_games > 10) {
+          //     return 'white'
+          //   } else {
+          //     return 'black'
+          //   }
+          // }
+        )
+
+      // update existing bar labels
+      svg.selectAll('text')
+        .data(newdata2)
+        .merge(barLabel)
+        .transition()
+        .duration(1000)
+        .text(function (d) {
+          return d.Num_games
+        })
+        .attr('x', function (d, i) {
+          return xScale(d.Year) + xScale.bandwidth() / 2
+        })
+        .attr('y', function (d) {
+          if (d.Num_games > 10) {
+            return yScale(d.Num_games) + 13
+          } else {
+            return yScale(d.Num_games) - 5
+          }
+        })
+        .attr('text-anchor', 'middle')
+        .attr('font-family', 'Optima, Futura, sans-serif')
+        .attr('font-size', '10px')
+        .attr('fill', 'black'
+          // function (d) {
+          //   if (d.Num_games > 10) {
+          //     return 'white'
+          //   } else {
+          //     return 'black'
+          //   }
+          // }
+        )
+
+      // update axes
+      svg.select('.x.axis')
+        .transition()
+        .duration(1000)
+        .call(xAxis)
+
+      svg.select('.y.axis')
+        .transition()
+        .duration(1000)
+        .call(yAxis)
+
+      // remove old elements
+      bars.exit()
+        .transition()
+        .duration(500)
+        .attr('x', -xScale.bandwidth())
+        .remove()
+
+      barLabel.exit()
+        .transition()
+        .duration(500)
+        .attr('x', -xScale.bandwidth())
+        .remove()
+
+
+      //      alert("Hey, don't click that!")
+    })
 })

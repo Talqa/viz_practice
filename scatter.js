@@ -126,7 +126,7 @@ d3.csv('data/vgsales-12-4-2019_critic_score.csv', rowConverter, function (data) 
     .attr('font-weight', 'bold')
     .attr('x', w / 2)
     .attr('y', 20)
-    .text('Critic Score vs Sales in North America')
+    .text('Video Game Critic Score vs Sales in North America')
 
   // add axes
   svg.append('g')
