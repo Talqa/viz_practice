@@ -299,7 +299,19 @@ d3.csv('data/vgsales-12-4-2019_num_publishers.csv', rowConverter, function (data
         .attr('x', -xScale.bandwidth())
         .remove()
 
-
       //      alert("Hey, don't click that!")
+    })
+
+  // interactivity (hover highlight)
+  d3.selectAll('rect')
+    .on('mouseover', function () {
+      d3.select(this)
+        .attr('fill', 'blue')
+    })
+    .on('mouseout', function () {
+      d3.select(this)
+        .transition()
+        .duration(50)
+        .attr('fill', '#D88011')
     })
 })
