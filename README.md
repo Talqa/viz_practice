@@ -1,5 +1,12 @@
 Here I try to create various visualizations in D3.js.
 
+TODO:
+- refacor code to make more sense
+- add transitions for plot elements / fix enter-update-exit
+- add dropdown menu to select publisher
+- add legend to pick which publishers to display together
+- add hover tool and highlight (data points and their text)
+
 Notes on running local server:
 
 To run a server from VS Code (Live Server extension):
