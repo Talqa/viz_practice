@@ -6,6 +6,12 @@ TODO:
 - add dropdown menu to select publisher
 - add legend to pick which publishers to display together
 - add hover tool and highlight (data points and their text)
+- name all transitions to prevent conflicts
+
+- add plot for overall revenue per publisher
+  - with dropdown for year and total
+  - sorted descending for each year
+
 
 Notes on running local server:
 
